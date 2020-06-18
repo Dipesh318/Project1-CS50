@@ -47,7 +47,8 @@ def login():
         data = {"username": user, "email": user}
         result = db.execute("SELECT * FROM users WHERE username = :username or email = :email",data).fetchone()
         if result == None or not check_password_hash(result[2], request.form.get("password")):
-            return render_template("error.html", message="User Not Found")
+            flash("User not found", "danger")
+            return render_template("error.html", message="Either the user is not registered or Credentials are wrong")
         session["user_id"] = result[0]
         session["user_name"] = result[1] 
         flash(f"Welcome back {result[4]}", "success")
@@ -68,10 +69,11 @@ def register():
         Cpassword = request.form.get("Cpassword")
         if( password != Cpassword):
             flash("Password Mismatch","danger")
-            return render_template("error.html", message="Password and Conform Password does not match")
+            return render_template("error.html", message="Password and Confirm Password does not match")
         data = {"username": username, "email": email}
         check_user = db.execute("SELECT * FROM users WHERE username = :username OR email= :email",data).fetchone()
         if check_user:
+            flash("Multiple Register","danger")
             return render_template("error.html", message="Username or Email Already Exits")
         hashedPassword = generate_password_hash(request.form.get("password"), method='pbkdf2:sha256', salt_length=8)
         data = {"username":username, "password":hashedPassword, "email":email, "name":name}
@@ -104,13 +106,13 @@ def search():
             result = db.execute(f"SELECT * FROM books WHERE {catogry} = '{book}'").fetchall()
             if len(result) == 0:
                 flash("Book Not Found", "danger")
-                return render_template("error.html", message="Book You're Searching for does not found")
+                return render_template("error.html", message="Book You're Searching for is not available at the moment")
             return render_template("view.html", result=result)
         else:
             return render_template("search.html")
     else:
         flash("Login required", "danger")
-        return render_template("error.html")
+        return render_template("error.html", message="You need to be Logged in")
 
 
 @app.route("/book/<isbn>", methods=["GET", "POST"])
@@ -175,13 +177,3 @@ def api_route(isbn):
 
 
     return jsonify(dict_result)
-
-
-            
-
-
-
-
-
-
-
