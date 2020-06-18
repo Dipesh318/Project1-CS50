@@ -1,0 +1,34 @@
+{%extends "layout.html"%}
+
+{%block head%}
+<h1 class="container heading">Search Book</h1>
+{%endblock%}
+
+
+{%block body%}
+<div class="container">
+    
+    <div >
+        <form action="{{url_for('search')}}" method="POST" class="form">
+            <div class="form-group">
+                <select id="catogry" class="form-control" name="catogry" required>
+                    <option value="isbn" selected>ISBN</option>
+                    <option value="author">Author</option>
+                    <option value="title">Title</option>
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Select ISBN/Title/Author of Book.</small>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="book" placeholder="Enter Value" name="book" required>
+                <small id="book" class="form-text text-muted">Enter ISBN/Title/Author of Book.</small>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+              
+        </form>
+        <a href="{{url_for('index')}}" style="display:inline">Go Back</a>
+    </div>
+</div>
+
+{%endblock%}

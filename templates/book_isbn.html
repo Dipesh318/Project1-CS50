@@ -1,0 +1,92 @@
+{%extends "layout.html"%}
+
+
+{%block head%}
+<h1 class="container heading">Book Page</h1>
+{%endblock%}
+
+
+
+{%block body%}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="card-img-top" src="http://covers.openlibrary.org/b/isbn/{{book_Info['isbn']}}-M.jpg" alt="Card image cap">
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                  <h1 class="card-title jumbotron">{{book_result[2]}}</h1>
+                  <h4 class="card-title">By:- <i>{{book_result[3]}}</i></h4>
+                  <p class="card-text">ISBN : {{book_Info['isbn']}} </p>
+                  <p class="card-text">Year : {{book_result[4]}} </p>
+                  <p class="card-text">Average Rating : {{book_Info['average_rating']}} </p>
+                  <p class="card-text">No of Rating : {{book_Info['work_ratings_count']}} </p>
+
+                  <hr>
+                  <div class="well">
+                    {% for review in reviews %}
+                      <div class="row">
+                          
+                          <div class="col-md-12">
+                              
+                              <strong><h6>{{review[0]}}</h6></strong>
+                              <span class="float-right"><button type="button" class="btn btn-outline-primary btn-sm">
+                                    Rating :  <span class="badge badge-light">{{review[2]}} <i class="fa fa-star"></i></span>
+                                </button>
+                              </span>
+                              <span class="samll"><samll>{{review[3]}}</samll></span>
+                              
+                              <p>
+                                  {{review[1]}}
+                              </p>
+                          </div>
+                      </div>
+      
+                    {%endfor%}
+                  </div>
+                
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+
+<div class="container" style="padding-top: 2vh">
+    <form class="form" method="POST" action="/book/{{book_Info['isbn']}}">
+        <div class="form-group">
+            <label class="my-1 mr-2" for="rating">Rating</label>
+            <select class="custom-select my-1 mr-sm-2" id="rating" name="rating" required>
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            </select>
+        </div>
+        
+      
+        <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea class="form-control" rows="5" id="comment" name="review" placeholder="Enter Your Comment" required></textarea>
+        </div>
+      
+        <button type="submit" class="btn btn-primary my-1">Submit</button>
+      </form>
+
+</div>
+
+
+
+{%endblock%}
+
+
+
+
+
+
