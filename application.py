@@ -167,6 +167,8 @@ def api_route(isbn):
     dict_result={}
     result = db.execute(f"SELECT books.title, books.isbn, books.author, books.year, COUNT(reviews.comment) as review_count, AVG(reviews.rating) as average_score FROM books INNER JOIN reviews on books.id = reviews.book_id WHERE isbn LIKE '{isbn}' GROUP BY books.title, books.author, books.isbn ,books.year ").fetchone()
     print(result)
+    if result is None:
+        return jsonify({"Error": "Invalid book ISBN"}), 404
     dict_result["title"]=result[0]
     dict_result["isbn"]=result[1]
     dict_result["author"]=result[2]
